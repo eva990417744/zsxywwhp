@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load staticfiles %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'hp/css/bootstrap-theme.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'hp/css/bootstrap.min.css' %}">
+    <script src="{% static 'hp/js/JQ.js' %}"></script>
+    <script src="{% static 'hp/js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+<ol class="breadcrumb">
+    <li class="active">Home</li>
+</ol>
+
+<div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+        <div class="row">
+            <p class="col-lg-1"></p>
+            <ul class="nav nav-tabs" role="tablist" id="myTab">
+                <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">First grade</a></li>
+                <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">second grade</a></li>
+                <li role="presentation"><a href="#messages" role="tab" data-toggle="tab">Third grade</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <p></p>
+                    {% for hp in hp_list %}
+                        {% if hp.grade == 'one' %}
+                            {% if hp.blood >= 50 %}
+                                <div class="row">
+                                    <p class="col-lg-1"></p>
+                                    <li class="col-lg-1"><a href="/hp/{{ hp.id }}">{{ hp.name }}</a></li>
+                                    <div class="progress ">
+                                        <div class="progress-bar progress-bar-success" role="progressbar"
+                                             aria-valuenow="0"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100" style="width: {{ hp.blood }}%">
+                                            {{ hp.blood }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="row">
+                                    <p class="col-lg-1"></p>
+                                    <li class="col-lg-1"><a href="/hp/{{ hp.id }}">{{ hp.name }}</a></li>
+                                    <div class="progress ">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar"
+                                             aria-valuenow="0"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100" style="width: {{ hp.blood }}%">
+                                            {{ hp.blood }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div role="tabpanel" class="tab-pane" id="profile">
+                    <p></p>
+                    {% for hp in hp_list %}
+                        {% if hp.grade == 'two' %}
+                            {% if hp.blood >= 50 %}
+                                <div class="row">
+                                    <p class="col-lg-1"></p>
+                                    <li class="col-lg-1"><a href="/hp/{{ hp.id }}">{{ hp.name }}</a></li>
+                                    <div class="progress ">
+                                        <div class="progress-bar progress-bar-success" role="progressbar"
+                                             aria-valuenow="0"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100" style="width: {{ hp.blood }}%">
+                                            {{ hp.blood }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="row">
+                                    <p class="col-lg-1"></p>
+                                    <li class="col-lg-1"><a href="/hp/{{ hp.id }}">{{ hp.name }}</a></li>
+                                    <div class="progress ">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar"
+                                             aria-valuenow="0"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100" style="width: {{ hp.blood }}%">
+                                            {{ hp.blood }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div role="tabpanel" class="tab-pane" id="messages">
+                    <p></p>
+                    {% for hp in hp_list %}
+                        {% if hp.grade == 'three' %}
+                            {% if hp.blood >= 50 %}
+                                <div class="row">
+                                    <p class="col-lg-1"></p>
+                                    <li class="col-lg-1"><a href="/hp/{{ hp.id }}">{{ hp.name }}</a></li>
+                                    <div class="progress ">
+                                        <div class="progress-bar progress-bar-success" role="progressbar"
+                                             aria-valuenow="0"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100" style="width: {{ hp.blood }}%">
+                                            {{ hp.blood }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="row">
+                                    <p class="col-lg-1"></p>
+                                    <li class="col-lg-1"><a href="/hp/{{ hp.id }}">{{ hp.name }}</a></li>
+                                    <div class="progress ">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar"
+                                             aria-valuenow="0"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100" style="width: {{ hp.blood }}%">
+                                            {{ hp.blood }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-1"></div>
+</div>
+</body>
+<script>
+    $(function () {
+        $('#myTab a:first').tab('show')
+    })
+</script>
+</html>

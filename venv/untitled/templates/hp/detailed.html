@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load staticfiles %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'hp/css/bootstrap-theme.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'hp/css/bootstrap.min.css' %}">
+    <script src="{% static 'hp/js/JQ.js' %}"></script>
+    <script src="{% static 'hp/js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+<ol class="breadcrumb">
+    <li><a href="\hp\">Home</a></li>
+    <li class="active">detailed</li>
+</ol>
+<div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+        <div class="panel panel-info">
+            <div class="panel-body">
+                <h3>{{ hp.name }}</h3>
+            </div>
+            <div class="panel-footer">
+                {% if hp.blood >= 50 %}
+                    <div class="row">
+                        <p class="col-lg-1">hp</p>
+                        <div class="progress ">
+                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100" style="width: {{ hp.blood }}%">
+                                {{ hp.blood }}
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <p class="col-lg-1">hp</p>
+                        <div class="progress ">
+                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100" style="width: {{ hp.blood }}%">
+                                {{ hp.blood }}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="row">
+                    <p class="col-lg-2">last change_time </p>
+                    <p class="col-lg-2">{{ hp.change_time }}</p>
+                    <button type="button" class="btn btn-success  btn-sm col-lg-1" data-toggle="modal"
+                            data-target="#bufffrom">
+                        buff form
+                    </button>
+                    <button type="button" class="btn btn-danger  btn-sm right col-lg-1" data-toggle="modal"
+                            data-target="#debufffrom">
+                        Debuff form
+                    </button>
+                </div>
+                <p></p>
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                                   aria-expanded="true"
+                                   aria-controls="collapseOne">
+                                    Debuff
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel"
+                             aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="table-responsive table-hover table-striped">
+                                    <table class="table">
+                                        <thead>
+                                        <th>reason</th>
+                                        <th>remark</th>
+                                        <th>time</th>
+                                        </thead>
+                                        <tbody>
+                                        {% if debuff_list %}
+                                            {% for debuff in debuff_list %}
+                                                <tr class="danger">
+                                                    <td>{{ debuff.DeBuff_Reason }}</td>
+                                                    <td>{{ debuff.DeBuff_Text }}</td>
+                                                    <td>{{ debuff.add_time }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% else %}
+                                            <p>NO BUFF LIST</p>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseTwo"
+                                   aria-expanded="false" aria-controls="collapseTwo">
+                                    Buff
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel"
+                             aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <div class="table-responsive table-hover table-striped">
+                                    <table class="table">
+                                        <thead>
+                                        <th>reason</th>
+                                        <th>remark</th>
+                                        <th>time</th>
+                                        </thead>
+                                        <tbody>
+                                        {% if buff_list %}
+                                            {% for buff in buff_list %}
+                                                <tr class="success">
+                                                    <td>{{ buff.Buff_Reason }}</td>
+                                                    <td>{{ buff.Buff_Text }}</td>
+                                                    <td>{{ buff.add_time }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% else %}
+                                            <p>NO BUFF LIST</p>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-1"></div>
+</div>
+<div class="modal fade" id="bufffrom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span
+                        aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Buff</h4>
+            </div>
+            <div class="modal-body">
+                <form class='form-horizontal' role="form" action="/hp/{{ hp.id }}/buff/" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="reason" class="col-sm-2 control-label">reason</label>
+                        <div class="col-sm-7 col-lg-5 col-md-7 col-xs-7">
+                            <select class="form-control" name="reason">
+                                {% for reason in bufff.Level %}
+                                    <option value="{{ reason }}">{{ reason }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="text" class="col-sm-2 control-label">remark</label>
+                        <div class="col-sm-7 col-lg-5 col-md-7 col-xs-7">
+                            <input type="text" class="form-control" id="text" placeholder="remark" name="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10 col-lg-5 col-md-7 col-xs-7">
+                            <button type="submit" class="btn btn-default">submit</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="debufffrom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span
+                        aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Debuff</h4>
+            </div>
+            <div class="modal-body">
+                <form class='form-horizontal' role="form" action="/hp/{{ hp.id }}/debuff/" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="reason" class="col-sm-2 control-label">reason</label>
+                        <div class="col-sm-7 col-lg-5 col-md-7 col-xs-7">
+                            <select class="form-control" name="reason">
+                                {% for reason in debufff.Level1 %}
+                                    <option value="{{ reason }}">Level1-{{ reason }}</option>
+                                {% endfor %}
+                                {% for reason in debufff.Level2 %}
+                                    <option value="{{ reason }}">Level2-{{ reason }}</option>
+                                {% endfor %}
+                                {% for reason in debufff.Level3 %}
+                                    <option value="{{ reason }}">Level3-{{ reason }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="text" class="col-sm-2 control-label">remark</label>
+                        <div class="col-sm-7 col-lg-5 col-md-7 col-xs-7">
+                            <input type="text" class="form-control" id="text" placeholder="remark" name="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10 col-lg-5 col-md-7 col-xs-7">
+                            <button type="submit" class="btn btn-default">submit</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

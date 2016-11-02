@@ -1,0 +1,26 @@
+# mysite_uwsgi.ini file
+[uwsgi]
+
+# Django-related settings
+# the base directory (full path)
+chdir           = /root/untitled
+# Django's wsgi file
+module          = untitled.wsgi
+# the virtualenv (full path)
+home            = /home/eva/PycharmProjects/untitled/venv 
+
+# process-related settings
+# master
+master          = true
+# maximum number of worker processes
+processes       = 10
+# the socket (use the full path to be safe
+socket          = /home/eva/PycharmProjects/untitled/untitled.sock 
+# ... with appropriate permissions - may be needed
+chmod-socket    = 666
+# clear environment on exit
+vacuum          = true
+max-requests = 5000
+daemonize = /var/log/uwsgi/hp.log
+limit-as = 128
+harakiri = 20
